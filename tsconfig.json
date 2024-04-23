@@ -1,0 +1,59 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "lib": [
+        "dom",
+        "dom.iterable",
+        "esnext"
+      ],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "noEmit": true,
+      "esModuleInterop": true,
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "jsx": "preserve",
+      "incremental": true,
+      "plugins": [
+        {
+          "name": "next"
+        }
+      ],
+      "baseUrl": "./src",
+      "paths": {
+        "@pages-flat/*": [
+          "app/pages-flat/*"
+        ],
+        "@widgets/*": [
+          "widgets/*"
+        ],
+        "@features/*": [
+          "features/*"
+        ],
+        "@entities/*": [
+          "entities/*"
+        ],
+        "@shared/*": [
+          "shared/*"
+        ],
+      }
+    },
+    "include": [
+      "next-env.d.ts",
+      "**/*.ts",
+      "**/**/*.ts",
+      "**/*.tsx",
+      "public/*.ts",
+      "/public/*.ts",
+      ".next/types/**/*.ts",
+      "out/types/**/*.ts"
+    ],
+    "exclude": [
+      "node_modules",
+      "**/*.test.tsx",
+      "**/videos/*",
+    ]
+  }

@@ -1,0 +1,77 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next"
+  ],
+  "rules": {
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          /**
+          * widgets 
+          */
+          {
+            "target": "src/widgets",
+            "from": "src/app",
+            "message": "widgets 디렉토리는 app 디렉토리를 참조할 수 없습니다."
+          },
+          /**
+          * features 
+          */
+          {
+            "target": "src/features",
+            "from": "src/app",
+            "message": "features 디렉토리는 app, widgets 디렉토리를 참조할 수 없습니다."
+          },
+          {
+            "target": "src/features",
+            "from": "src/widgets",
+            "message": "features 디렉토리는 app, widgets 디렉토리를 참조할 수 없습니다."
+          },
+          /**
+          * entities 
+          */
+          {
+            "target": "src/entities",
+            "from": "src/app",
+            "message": "entities 디렉토리는 app, widgets, features 디렉토리를 참조할 수 없습니다."
+          },
+          {
+            "target": "src/entities",
+            "from": "src/widgets",
+            "message": "entities 디렉토리는 app, widgets, features 디렉토리를 참조할 수 없습니다."
+          },
+          {
+            "target": "src/entities",
+            "from": "src/features",
+            "message": "entities 디렉토리는 app, widgets, features 디렉토리를 참조할 수 없습니다."
+          },
+          /**
+          * shared 
+          */
+          {
+            "target": "src/shared",
+            "from": "src/app",
+            "message": "shared 디렉토리는 app, widgets, features, entities 디렉토리를 참조할 수 없습니다."
+          },
+          {
+            "target": "src/shared",
+            "from": "src/widgets",
+            "message": "shared 디렉토리는 app, widgets, features, entities 디렉토리를 참조할 수 없습니다."
+          },
+          {
+            "target": "src/shared",
+            "from": "src/features",
+            "message": "shared 디렉토리는 app, widgets, features, entities 디렉토리를 참조할 수 없습니다."
+          },
+          {
+            "target": "src/shared",
+            "from": "src/entities",
+            "message": "shared 디렉토리는 app, widgets, features, entities 디렉토리를 참조할 수 없습니다."
+          }
+        ]
+      }
+    ]
+  }
+}
