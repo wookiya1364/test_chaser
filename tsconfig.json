@@ -50,7 +50,7 @@
       "/public/*.ts",
       ".next/types/**/*.ts",
       "out/types/**/*.ts"
-    ],
+, "src/shared/garbage-collection-stalker.tsx"    ],
     "exclude": [
       "node_modules",
       "**/*.test.tsx",

@@ -1,14 +1,14 @@
 "use client";
 import Test from "@features/test/page";
 import { Select } from "@shared/atom/select";
-import { ChangeEvent, useCallback, useEffect, useMemo } from "react";
+import { ChangeEvent, useCallback, useMemo } from "react";
 import Link from "next/link";
 import GcsTest from "./test";
-import useGCS from "@shared/useGCS";
 import { Button } from "@shared/index";
+import { useGCS } from "@shared/garbage-collection-stalker";
 
 export default function Home() {
-    const { w, register } = useGCS();
+    const { stalk, arrest, murder } = useGCS();
     const options: TOption[] = useMemo(
         () => [
             { label: "1", value: 2 },
@@ -19,24 +19,20 @@ export default function Home() {
     const handleSelect = useCallback(
         (event: ChangeEvent<HTMLSelectElement>) => {
             console.log(`You selected ${event.target.value}`);
-            w.current?.postMessage([Math.random() * 10000]);
+            stalk([Math.random() * 10000]);
         },
-        [w]
+        [stalk]
     );
 
-    useEffect(() => {
-        if (w.current) {
-            // for (let idx = 0; idx < 1_350; idx++) {
-            for (let idx = 0; idx < 1; idx++) {
-                register([1, 2, 3, 4, 5, 6, 7, console, console.log, handleSelect]);
-                register(["DDD"]);
-            }
-        }
-
-        return () => {};
-    }, [handleSelect, register, w]);
-
     const iter = Array.from({ length: 20 }).fill(1);
+
+    for (let idx = 0; idx < 1; idx++) {
+        // stalk("여러가지", [1, 2, 3, 4, 5, 6, 7, console, console.log, handleSelect]);
+        stalk("options", options);
+        stalk("handleSelect", handleSelect);
+        
+    }
+    // stalk("이터입니다", iter);
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -48,15 +44,17 @@ export default function Home() {
             <Select label="label입니다." options={options} value="dd" onChange={handleSelect} />
             <Button
                 onClick={() => {
-                    w.current?.postMessage({
-                        type: "keys",
-                    });
-                    w.current?.postMessage({
-                        type: "entries",
-                    });
+                    arrest();
                 }}
             >
                 CLICK
+            </Button>
+            <Button
+                onClick={() => {
+                    murder();
+                }}
+            >
+                MURDER
             </Button>
         </main>
     );

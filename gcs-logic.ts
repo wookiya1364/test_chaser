@@ -1,21 +1,30 @@
 const keybyObject = (object: any) => ({ target: object });
-const inspectObjectType = (value: any): InspectType => {
+const checkEmptyOrNull = (value: any) => {
+    if (value === null || value === undefined || value == "") {
+        return null; // null 또는 undefined인 경우
+    }
+    if (Array.isArray(value) && value.length === 0) {
+        return null; // 빈 배열인 경우
+    }
+    return value; // 그 외의 경우
+};
+const inspectObjectType = (value: any): string => {
     if (value === null || (typeof value !== "object" && typeof value !== "function")) {
-        return value;
+        return JSON.stringify(value);
     }
 
     if (typeof value === "function") {
-        return `Function: ${value.name || "anonymous"}`;
+        return JSON.stringify(`Function: ${value.name || "anonymous"}`);
     }
 
     if (Array.isArray(value)) {
-        const elements = value.slice(0, 10).map(inspectObjectType);
-        return JSON.stringify(elements);
+        const elements = value.map(inspectObjectType);
+        return elements.join(', '); // 배열을 JSON 배열 형식으로 반환
     }
 
-    const entries = Object.entries(value).slice(0, 10);
-    const props = entries.map(([key, val]) => `${key}: ${inspectObjectType(val)}`);
-    return `{${props.join(", ")}}`;
+    const entries = Object.entries(value);
+    const props = entries.map(([key, val]) => `"${key}": ${inspectObjectType(val)}`);
+    return `{ ${props.join(", ")} }`; // 객체를 JSON 객체 형식으로 반환
 };
 
 const gcsLabel = () => {
@@ -51,4 +60,4 @@ const gcs = () => {
     };
 };
 
-export { gcsLabel, gcs };
+export { gcsLabel, gcs, keybyObject, inspectObjectType, checkEmptyOrNull };

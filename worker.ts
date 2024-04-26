@@ -1,9 +1,9 @@
 import { gcsLabel } from "./gcs-logic";
 
-interface WorkerMessage {
+type WorkerMessage = {
     type: string;
     payload: object;
-}
+};
 
 class GCCache {
     #weakMap = new WeakMap();
@@ -22,13 +22,15 @@ class GCCache {
         return entry?.payload;
     }
 
-    delete(type: object) {
-        const entry = this.#weakMap.get(type);
+    delete(type: any) {
+        let entry = this.#weakMap.get(type);
         if (!entry) {
             return false;
         }
         this.#weakMap.delete(type);
         this.#refSet.delete(entry.ref);
+        type = null;
+        entry = null;
         return true;
     }
 
@@ -58,32 +60,23 @@ class GCCache {
     }
 }
 
-let gcCache = new GCCache();
+const gcCache = new GCCache();
 
 addEventListener("message", (event: MessageEvent<WorkerMessage>) => {
     const { type } = event.data;
-    let result = [];
+    const result = [];
     switch (type) {
-        case "get":
-            postMessage(gcCache.get(event.data));
-            break;
-        case "values":
+        case "arrest":
             for (const value of gcCache.values()) {
                 result.push(value);
             }
             postMessage(result);
             break;
-        case "keys":
-            for (const key of gcCache.keys()) {
-                result.push(key);
+        case "murder":
+            for (const value of gcCache.values()) {
+                gcCache.delete(value);
             }
-            postMessage(result);
-            break;
-        case "entries":
-            for (const [key, value] of gcCache.entries()) {
-                result.push({ key, value });
-            }
-            postMessage(result);
+            postMessage("murder");
             break;
         default:
             gcCache.set(event.data);
